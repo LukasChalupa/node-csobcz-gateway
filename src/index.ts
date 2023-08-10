@@ -25,16 +25,10 @@ import VerificationError from './types/VerificationError'
 import { getObjectTextToSign } from './utils/getObjectTextToSign'
 
 export {
-	GatewayError,
-	VerificationError,
-	PaymentOperation,
-	PaymentMethod,
-	PaymentResult,
+	Currency, GatewayError, Language, PaymentMethod, PaymentOperation, PaymentResult,
 	PaymentStatus,
 	ResultCode,
-	ReturnMethod,
-	Language,
-	Currency,
+	ReturnMethod, VerificationError
 }
 export class CSOBPaymentModule {
 	private readonly logger?: Logger
@@ -60,6 +54,10 @@ export class CSOBPaymentModule {
 	}
 
 	async commonInit(payload, initUrlPath: string): Promise<PaymentResult> {
+		console.log('-------------  INIT_PAYLOAD -------------')
+		console.log(payload)
+		console.log('------------- /INIT_PAYLOAD -------------')
+
 		try {
 			const result = await superagent.post(`${this.config.gateUrl}${initUrlPath}`).send(payload)
 			if (this.verify(this.createResultMessage(result.body), result.body.signature)) {
